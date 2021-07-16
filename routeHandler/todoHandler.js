@@ -60,7 +60,7 @@ router.post('/all', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
 
-    await Todo.updateOne({ _id: req.params.id }, { $set: { status: 'inactive' } }, (err) => {
+    await Todo.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'inactive' } }, {}, (err) => {
 
         if (err) {
             res.status(500).json({
@@ -77,7 +77,19 @@ router.put('/:id', async (req, res) => {
 
 
 
+    // await Todo.updateOne({ _id: req.params.id }, { $set: { status: 'inactive' } }, (err) => {
 
+    //     if (err) {
+    //         res.status(500).json({
+    //             error: "Update Failed"
+    //         })
+    //     } else {
+    //         res.status(200).json({
+    //             message: "Update successfully"
+    //         })
+    //     }
+
+    // })
 
 
 
