@@ -6,9 +6,45 @@ const todoSchema = require('../scema/todoScema');
 const Todo = new mongoose.model("Todo", todoSchema);
 
 
-
-
 router.get('/', async (req, res) => {
+    await Todo.find({ status: 'active' })
+        .select({
+            _id: 0,
+            date: 0,
+            _v: 0,
+            data: 0
+        }).exec((err, data) => {
+            if (err) {
+                error.status(500).json({
+                    error: "There was a error",
+                });
+            } else {
+                res.status(200).json({
+                    result: data,
+                    message: 'Todo get complete'
+                })
+            }
+
+        })
+
+
+
+    // await Todo.find({ status: 'active' }, (err, data) => {
+    //     if (err) {
+    //         error.status(500).json({
+    //             error: "There was a error",
+    //         });
+    //     } else {
+    //         res.status(200).json({
+    //             result: data,
+    //             message: 'Todo get complete'
+    //         })
+    //     }
+    // });
+
+
+
+
 
 })
 
@@ -60,19 +96,25 @@ router.post('/all', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
 
-    await Todo.findByIdAndUpdate({ _id: req.params.id }, { $set: { status: 'inactive' } }, {}, (err) => {
+    await Todo.findByIdAndUpdate({ _id: req.params.id },
+        { $set: { status: 'active' } },
+        {
+            new: true,
+            useFindAndModify: false,
+        },
+        (err) => {
 
-        if (err) {
-            res.status(500).json({
-                error: "Update Failed"
-            })
-        } else {
-            res.status(200).json({
-                message: "Update successfully"
-            })
-        }
+            if (err) {
+                res.status(500).json({
+                    error: "Update Failed"
+                })
+            } else {
+                res.status(200).json({
+                    message: "Update successfully"
+                })
+            }
 
-    })
+        })
 
 
 
