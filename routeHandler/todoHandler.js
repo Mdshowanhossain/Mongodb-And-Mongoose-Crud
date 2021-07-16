@@ -13,7 +13,9 @@ router.get('/', async (req, res) => {
             date: 0,
             _v: 0,
             data: 0
-        }).exec((err, data) => {
+        })
+        .limit(1)
+        .exec((err, data) => {
             if (err) {
                 error.status(500).json({
                     error: "There was a error",
@@ -41,6 +43,29 @@ router.get('/', async (req, res) => {
     //         })
     //     }
     // });
+
+
+    // await Todo.find({ status: 'active' })
+    //     .select({
+    //         _id: 0,
+    //         date: 0,
+    //         _v: 0,
+    //         data: 0
+    //     }).exec((err, data) => {
+    //         if (err) {
+    //             error.status(500).json({
+    //                 error: "There was a error",
+    //             });
+    //         } else {
+    //             res.status(200).json({
+    //                 result: data,
+    //                 message: 'Todo get complete'
+    //             })
+    //         }
+
+    //     })
+
+
 
 
 
